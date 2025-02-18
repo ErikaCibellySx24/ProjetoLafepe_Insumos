@@ -1,0 +1,54 @@
+function verificarVencimentos() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var range = sheet.getRange("B2:D51"); // Ajuste para o intervalo onde suas MPs, Lotes e Datas de Vencimento estão
+  var values = range.getValues();
+
+  var hoje = new Date();
+  var emailsParaEnviar = [];
+  var vencidos = [];
+
+  // Formatação de data pra string
+  function formatarData(data) {
+    return Utilities.formatDate(data, Session.getScriptTimeZone(), "dd/MM/yyyy");
+  }
+
+  for (var i = 0; i < values.length; i++) {
+    var codigoMp = values[i][0];
+    var lote = values[i][1];
+    var dataVencimento = values[i][2];
+
+    if (dataVencimento instanceof Date) {
+      var diasRestantes = Math.floor((dataVencimento - hoje) / (1000 * 60 * 60 * 24));
+      
+      if (diasRestantes === 30) {
+        emailsParaEnviar.push("Código MP: " + codigoMp + ", Lote: " + lote + ", Data de Vencimento: " + formatarData(dataVencimento) + " - Vence em 30 dias.");
+      } else if (diasRestantes === 10) {
+        emailsParaEnviar.push("Código MP: " + codigoMp + ", Lote: " + lote + ", Data de Vencimento: " + formatarData(dataVencimento) + " - Vence em 10 dias.");
+      } else if (diasRestantes === 5) {
+        emailsParaEnviar.push("Código MP: " + codigoMp + ", Lote: " + lote + ", Data de Vencimento: " + formatarData(dataVencimento) + " - Vence em 5 dias.");
+      } else if (diasRestantes === 3) {
+        emailsParaEnviar.push("Código MP: " + codigoMp + ", Lote: " + lote + ", Data de Vencimento: " + formatarData(dataVencimento) + " - Vence em 3 dias.");
+      } else if (diasRestantes === 0) {
+        emailsParaEnviar.push("Código MP: " + codigoMp + ", Lote: " + lote + ", Data de Vencimento: " + formatarData(dataVencimento) + " - Vence hoje.");
+      } else if (diasRestantes < 0) {
+        vencidos.push("Código MP: " + codigoMp + ", Lote: " + lote + ", Data de Vencimento: " + formatarData(dataVencimento) + " - Já venceu.");
+      }
+    }
+  }
+
+  if (emailsParaEnviar.length > 0) {
+    MailApp.sendEmail({
+      to: "erikacibelly034@gmail.com",
+      subject: "Alertas de Vencimentos de Lotes e MPs",
+      body: emailsParaEnviar.join("\n")
+    });
+  }
+
+  if (vencidos.length > 0) {
+    MailApp.sendEmail({
+      to: "erikacibelly034@gmail.com",
+      subject: "Confirmação de Ciência - Vencimentos de Lotes e MPs",
+      body: "Os seguintes lotes e MPs já venceram:\n" + vencidos.join("\n") + "\n\nPor favor, confirme a ciência destes vencimentos."
+    });
+  }
+}
