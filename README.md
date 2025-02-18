@@ -61,7 +61,9 @@ O projeto foi desenvolvido em cinco etapas:
 - **Otimização do questionário do Google Forms**: Refinar a entrada de dados para maior precisão.
 
 📌 **Acesse o Questionário do Google Forms:** [INSERIR LINK AQUI]
-📌 **Acesse o Dashboard:** [INSERIR LINK AQUI]
+
+📌 **Acesse o Dashboard:** [INSERIR LINK AQUI] https://lookerstudio.google.com/u/0/reporting/2d8a32cb-eb8e-4a58-b7a5-5a4930de50ce/page/j8x2D?classId=bce80484-8280-4beb-94c2-323901049385&assignmentId=1b612072-f38c-4ffe-ab1b-d10703180efe&submissionId=ecc6671c-1552-981f-093d-ee1b67dcf399
+
 📌 **Acesse o Script:** [INSERIR LINK AQUI]
 
 ## 👨‍💻 Equipe do Projeto
